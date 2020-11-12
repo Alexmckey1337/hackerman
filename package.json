@@ -45,15 +45,15 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.21.5"
   },
-  "husky": {
-    "hooks": {
-      "precommit": "npm run precommit"
-    }
-  },
   "lint-staged": {
     "*.{js,jsx}": [
-      "eslint --max-warnings=0",
+      "eslint --max-warnings=0 --fix",
       "prettier --write"
     ]
+  },
+  "husky": {
+    "hooks":{
+      "pre-commit": "lint-staged"
+    }
   }
 }
