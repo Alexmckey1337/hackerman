@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Text } from "../../components";
+import React from 'react';
+import { Button, Text, Link } from 'components';
 
 export const Main = () => {
 	return (
@@ -10,6 +10,7 @@ export const Main = () => {
 			<Text type="Heading1">Heading1</Text>
 			<Text type="Heading2">h2</Text>
 			<Text type="Heading3">h3</Text>
+			<Link to="/faq">To FAQ</Link>
 		</div>
 	);
 };

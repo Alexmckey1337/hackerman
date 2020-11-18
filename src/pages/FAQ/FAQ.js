@@ -1,5 +1,10 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'components';
 
 export const FAQ = () => {
-	return <div>FAQ</div>;
+	return (
+		<div>
+			<Link to="/">To main page</Link>
+		</div>
+	);
 };

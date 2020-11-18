@@ -17,10 +17,10 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject",
     "lint": "eslint src/**/*.js",
     "precommit": "lint-staged"
   },
@@ -43,9 +43,12 @@
     ]
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^6.3.1",
     "eslint": "^7.13.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.21.5"
+    "eslint-plugin-react": "^7.21.5",
+    "react-app-rewire-alias": "^0.1.6",
+    "react-app-rewired": "^2.1.6"
   },
   "lint-staged": {
     "*.{js,jsx}": [
