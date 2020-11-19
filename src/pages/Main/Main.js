@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, Link, RcSlider } from 'components';
+import { Button, Text, Link, RcSlider, Input } from 'components';
 
 export const Main = () => {
 	return (
@@ -12,6 +12,8 @@ export const Main = () => {
 			<Text type="Heading3">h3</Text>
 			<Link to="/faq">To FAQ</Link>
 			<RcSlider />
+			<Input />
+			<Input type="select" />
 		</div>
 	);
 };
