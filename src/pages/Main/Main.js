@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Text, Link, RcSlider } from 'components'
+import React from 'react';
+import { Button, Text, Link, RcSlider } from 'components';
 
 export const Main = () => {
 	return (
@@ -13,5 +13,5 @@ export const Main = () => {
 			<Link to="/faq">To FAQ</Link>
 			<RcSlider />
 		</div>
-	)
-}
+	);
+};

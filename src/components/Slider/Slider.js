@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { StyledSlider } from './Slider.styles'
-export * from './Slider.styles'
+import React, { useState } from 'react';
+import { StyledSlider } from './Slider.styles';
+export * from './Slider.styles';
 
 export const RcSlider = ({ value = 25 }) => {
-	const [sliderValue, setSliderValue] = useState(value)
+	const [sliderValue, setSliderValue] = useState(value);
 
 	return (
 		<div>
@@ -21,9 +21,9 @@ export const RcSlider = ({ value = 25 }) => {
 					borderRadius: 0
 				}}
 				onChange={(value) => {
-					setSliderValue(value)
+					setSliderValue(value);
 				}}
 			/>
 		</div>
-	)
-}
+	);
+};
