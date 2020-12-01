@@ -1,1 +1,1 @@
-export * from "./CalculatorModule";
+export * from './CalculatorModule';

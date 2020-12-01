@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import StyledTexts from "./Text.styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import StyledTexts from './Text.styles';
 
-export * from "./Text.styles";
+export * from './Text.styles';
 
 export const Text = ({ type, children, ...restProps }) => {
 	const StyledText = StyledTexts[type];
