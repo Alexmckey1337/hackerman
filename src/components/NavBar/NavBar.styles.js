@@ -8,3 +8,9 @@ export const StyledNavBar = styled.div`
 	align-items: center;
 	justify-content: space-around;
 `;
+
+export const StyledProfilePic = styled.img`
+	border-radius: 50%;
+	height: 2.5rem;
+	width: 2.5rem;
+`;
