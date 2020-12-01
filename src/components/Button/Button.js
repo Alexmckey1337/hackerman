@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { StyledButton } from "./Button.styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { StyledButton } from './Button.styles';
 
-export * from "./Button.styles";
+export * from './Button.styles';
 
 export const Button = ({
 	text,
-	variant = "contained",
+	variant = 'contained',
 	disabled = false,
 	onClick
 }) => {
