@@ -2,5 +2,6 @@ import firebase from 'firebase';
 
 export const uiConfig = {
 	signInFlow: 'popup',
-	signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
+	signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+	signInSuccessUrl: '/adminpagesecretlink'
 };
