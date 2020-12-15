@@ -20,10 +20,16 @@ export const Main = () => {
 	}, []);
 
 	const [user, setUser] = useState();
-	const [formValue, setFormValue] = useState('');
-	const handleNewUserMessage = (newMessage) => {
-		console.log(`New message incoming! ${newMessage}`);
-		// Now send the message throught the backend API
+	const handleNewUserMessage = async (newMessage) => {
+		firestore.collection('users').doc(user?.uid).set({
+			id: user?.uid,
+			createdAt: firebase.firestore.FieldValue.serverTimestamp()
+		});
+		await userRef.add({
+			text: newMessage,
+			createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+			uid: user?.uid
+		});
 	};
 
 	const firestore = firebase.firestore();
@@ -35,21 +41,6 @@ export const Main = () => {
 
 	const [messages] = useCollectionData(query, { idField: 'id' });
 	const [users] = useCollectionData(firestore.collection('users'));
-
-	const sendMessage = async (e) => {
-		e.preventDefault();
-		firestore.collection('users').doc(user?.uid).set({
-			id: user?.uid,
-			createdAt: firebase.firestore.FieldValue.serverTimestamp()
-		});
-		await userRef.add({
-			text: formValue,
-			createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-			uid: user?.uid
-		});
-
-		setFormValue('');
-	};
 
 	return (
 		<div>
@@ -70,12 +61,15 @@ export const Main = () => {
 			<Input />
 			<Input type="select" />
 			<Text type="BodyText">Hi,my name is {user?.uid}</Text>
-			<Widget handleNewUserMessage={handleNewUserMessage} />
+			<Widget handleNewUserMessage={handleNewUserMessage} addR />
 			<div>
 				{messages &&
 					messages?.map((message, i) => {
 						return (
-							<div key={i} style={{ display: 'flex', alignItems: 'center' }}>
+							<div
+								key={i}
+								style={{ display: 'flex', alignItems: 'center' }}
+							>
 								<img
 									src={message?.photoURL}
 									style={{
@@ -86,23 +80,18 @@ export const Main = () => {
 									}}
 								/>
 								{message.uid === user?.uid ? (
-									<p style={{ backgroundColor: 'yellow' }}>{message?.text}</p>
+									<p style={{ backgroundColor: 'yellow' }}>
+										{message?.text}
+									</p>
 								) : (
-									<p style={{ backgroundColor: 'pink' }}>{message?.text}</p>
+									<p style={{ backgroundColor: 'pink' }}>
+										{message?.text}
+									</p>
 								)}
 							</div>
 						);
 					})}
 			</div>
-			<form onSubmit={sendMessage}>
-				<input
-					value={formValue}
-					onChange={(e) => {
-						setFormValue(e.target.value);
-					}}
-				/>
-				<Button variant="outlined" text="Submit" type="submit" />
-			</form>
 		</div>
 	);
 };
