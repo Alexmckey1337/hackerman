@@ -7,3 +7,4 @@ export * from './Input';
 export * from './Link';
 export * from './Text';
 export * from './Slider';
+export * from './ChatWidget';

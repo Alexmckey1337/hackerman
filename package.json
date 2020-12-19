@@ -57,8 +57,7 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "eslint --max-warnings=0 --fix",
-      "prettier --write"
+      "eslint --max-warnings=0 --fix"
     ]
   },
   "husky": {

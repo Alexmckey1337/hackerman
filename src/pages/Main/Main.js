@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Text, Link, RcSlider, Input } from 'components';
-import { Widget } from 'react-chat-widget';
+import { Button, Text, Link, RcSlider, Input, ChatWidget } from 'components';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import 'react-chat-widget/lib/styles.css';
-
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 export const Main = () => {
 	useEffect(() => {
@@ -16,31 +12,9 @@ export const Main = () => {
 			.then((result) => {
 				setUser(result.user);
 			});
-		console.log(messages);
 	}, []);
 
 	const [user, setUser] = useState();
-	const handleNewUserMessage = async (newMessage) => {
-		firestore.collection('users').doc(user?.uid).set({
-			id: user?.uid,
-			createdAt: firebase.firestore.FieldValue.serverTimestamp()
-		});
-		await userRef.add({
-			text: newMessage,
-			createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-			uid: user?.uid
-		});
-	};
-
-	const firestore = firebase.firestore();
-	const userRef = firestore
-		.collection('users')
-		.doc(user?.uid)
-		.collection('messages');
-	const query = userRef.orderBy('createdAt').limit(25);
-
-	const [messages] = useCollectionData(query, { idField: 'id' });
-	const [users] = useCollectionData(firestore.collection('users'));
 
 	return (
 		<div>
@@ -48,7 +22,7 @@ export const Main = () => {
 				text="I am outlined"
 				variant="outlined"
 				onClick={() => {
-					console.log(users);
+					console.log('');
 				}}
 			/>
 			<Button text="I am contained" variant="contained" />
@@ -61,37 +35,7 @@ export const Main = () => {
 			<Input />
 			<Input type="select" />
 			<Text type="BodyText">Hi,my name is {user?.uid}</Text>
-			<Widget handleNewUserMessage={handleNewUserMessage} addR />
-			<div>
-				{messages &&
-					messages?.map((message, i) => {
-						return (
-							<div
-								key={i}
-								style={{ display: 'flex', alignItems: 'center' }}
-							>
-								<img
-									src={message?.photoURL}
-									style={{
-										borderRadius: '50%',
-										width: '2rem',
-										height: '2rem',
-										marginRight: '0.5rem'
-									}}
-								/>
-								{message.uid === user?.uid ? (
-									<p style={{ backgroundColor: 'yellow' }}>
-										{message?.text}
-									</p>
-								) : (
-									<p style={{ backgroundColor: 'pink' }}>
-										{message?.text}
-									</p>
-								)}
-							</div>
-						);
-					})}
-			</div>
+			<ChatWidget text="asdasdasd" user={user} />
 		</div>
 	);
 };
