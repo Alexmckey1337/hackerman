@@ -1,115 +1,155 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../firebase/context';
-import { uiConfig } from '../../firebase/firebaseui';
-import { FirebaseAuth } from 'react-firebaseui';
-import firebase from 'firebase';
-import 'firebase/firestore';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { app } from '../../firebase/firebase.js';
 import { Button } from 'components';
+import { StyledForm, StyledLabel } from './AgentFile.styles';
 
 export const AgentPage = () => {
 	const { user } = useContext(AuthContext);
-	const firestore = firebase.firestore();
-	const [formValue, setFormValue] = useState('');
-	const [users] = useCollectionData(
-		firestore.collection('users').orderBy('createdAt')
-	);
-	const [activeChat, setActiveChat] = useState();
-	const [messages] = useCollectionData(
-		firestore.collection(`users/${activeChat}/messages`).orderBy('createdAt')
-	);
-	const sendMessage = async (e) => {
-		e.preventDefault();
-		await firestore.collection(`users/${activeChat}/messages`).add({
-			text: formValue,
-			createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-			uid: user?.uid
-		});
+	const firestore = app.firestore();
+	const storage = app.storage().ref();
+	const [formValue, setFormValue] = useState({
+		title: '',
+		desc: '',
+		imgSrc: ''
+	});
+	const handleChange = (e) => {
+		setFormValue((prev) => ({
+			...prev,
+			[e.target.name]: e.target.value
+		}));
 	};
-	const handleChatClick = (user) => {
-		setActiveChat(user.id);
-	};
-	useEffect(() => {}, []);
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setIsDisabled(!isDisabled);
+		if (isFileInputActive) {
+			const fileRef = storage.child(file.name);
+			fileRef.put(file).then(
+				() => {
+					fileRef.getDownloadURL().then((url) => {
+						firestore
+							.collection('MyWork')
+							.add({
+								title: formValue.title,
+								desc: formValue.desc,
+								imgSrc: url,
+								dateTime: new Date()
+							})
+							.then(
+								() => {
+									setFormValue({ title: '', desc: '', imgSrc: '' });
+									setIsDisabled(false);
+								},
+								(err) => {
+									alert(`not success ${err}`);
+									setFormValue({ title: '', desc: '', imgSrc: '' });
+									setIsDisabled(false);
+								}
+							);
+					});
+				},
+				() => {
+					console.log('failure');
+				}
+			);
+		} else {
+			firestore
+				.collection('MyWork')
+				.add({
+					title: formValue.title,
+					desc: formValue.desc,
+					imgSrc: formValue.imgSrc,
+					dateTime: new Date()
+				})
+				.then(
+					() => {
+						setFormValue({ title: '', desc: '', imgSrc: '' });
+						setIsDisabled(false);
+					},
+					(err) => {
+						alert(`not success ${err}`);
+						setFormValue({ title: '', desc: '', imgSrc: '' });
+						setIsDisabled(false);
+					}
+				);
+		}
+	};
+	const [file, setFile] = useState();
+	const [isFileInputActive, setIsFileInputActive] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(false);
 	return (
 		<div>
-			<FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-
 			{user ? <img src={user?.photoURL} alt="user profile pic" /> : null}
-			{user ? (
-				<button
-					onClick={() => {
-						firebase.auth().signOut();
-					}}
-				>
-					Logout
-				</button>
-			) : null}
-			<button
-				onClick={() => {
-					console.log(users, messages);
+			<StyledForm
+				onSubmit={(e) => {
+					handleSubmit(e);
 				}}
 			>
-				sadasd
-			</button>
-			<form onSubmit={sendMessage}>
-				<input
-					value={formValue}
-					onChange={(e) => {
-						setFormValue(e.target.value);
+				<StyledLabel>
+					Title
+					<input
+						type="text"
+						required
+						value={formValue.title}
+						name="title"
+						onChange={handleChange}
+					/>
+				</StyledLabel>
+				<StyledLabel>
+					Description
+					<textarea
+						type="text"
+						required
+						name="desc"
+						value={formValue.desc}
+						onChange={handleChange}
+						style={{ width: '500px' }}
+					/>
+				</StyledLabel>
+				<Button
+					onClick={(e) => {
+						e.preventDefault();
+						setIsFileInputActive(!isFileInputActive);
 					}}
+					text={
+						isFileInputActive
+							? 'I want to provide url'
+							: 'I want to upload file'
+					}
 				/>
-				<Button variant="outlined" text="Submit" type="submit" />
-			</form>
-			<div
-				style={{
-					width: '100%',
-					height: 'auto',
-					border: '1px solid red',
-					display: 'flex'
-				}}
-			>
-				<div style={{ width: '16rem' }}>
-					{users &&
-						users?.map((user, i) => {
-							return (
-								<button key={i} onClick={() => handleChatClick(user)}>
-									{user.id}
-								</button>
-							);
-						})}
-				</div>
-				<div>
-					<div>
-						{messages &&
-							messages?.map((message, i) => {
-								return (
-									<div
-										key={i}
-										style={{ display: 'flex', alignItems: 'center' }}
-									>
-										<img
-											src={message?.photoURL}
-											style={{
-												borderRadius: '50%',
-												width: '2rem',
-												height: '2rem',
-												marginRight: '0.5rem'
-											}}
-										/>
-										{message.uid === user?.uid ? (
-											<p style={{ backgroundColor: 'yellow' }}>
-												{message?.text}
-											</p>
-										) : (
-											<p style={{ backgroundColor: 'pink' }}>{message?.text}</p>
-										)}
-									</div>
-								);
-							})}
-					</div>
-				</div>
-			</div>
+				{isFileInputActive ? (
+					<StyledLabel>
+						Select file from your drive (optional)
+						<input
+							type="file"
+							onChange={(e) => {
+								setFile(e.target.files[0]);
+							}}
+							name="file"
+						/>
+					</StyledLabel>
+				) : (
+					<StyledLabel>
+						Image link (optional)
+						<input
+							type="text"
+							name="imgSrc"
+							value={formValue.imgSrc}
+							onChange={handleChange}
+						/>
+					</StyledLabel>
+				)}
+				<Button
+					disabled={isDisabled}
+					variant="outlined"
+					text="Submit"
+					type="submit"
+				/>
+			</StyledForm>
+			<div>{formValue.title}</div>
+			<div>{formValue.desc}</div>
+			<div>{formValue.imgSrc}</div>
 		</div>
 	);
 };

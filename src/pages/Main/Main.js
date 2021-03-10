@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Text, Link, RcSlider, Input, ChatWidget } from 'components';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import {
+	StyledMain,
+	StyledImage,
+	StyledText,
+	StyledGlasses
+} from './Main.style';
 
 export const Main = () => {
 	useEffect(() => {
@@ -10,32 +15,23 @@ export const Main = () => {
 			.auth()
 			.signInAnonymously()
 			.then((result) => {
+				console.log(result.user);
 				setUser(result.user);
 			});
 	}, []);
 
 	const [user, setUser] = useState();
-
+	console.log(user);
 	return (
-		<div>
-			<Button
-				text="I am outlined"
-				variant="outlined"
-				onClick={() => {
-					console.log('');
-				}}
-			/>
-			<Button text="I am contained" variant="contained" />
-			<Text type="BodyText">Text</Text>
-			<Text type="Heading1">Heading1</Text>
-			<Text type="Heading2">h2</Text>
-			<Text type="Heading3">h3</Text>
-			<Link to="/faq">To FAQ</Link>
-			<RcSlider />
-			<Input />
-			<Input type="select" />
-			<Text type="BodyText">Hi,my name is {user?.uid}</Text>
-			<ChatWidget text="asdasdasd" user={user} />
-		</div>
+		<StyledMain>
+			<h1>Hi, my name is:</h1>
+			<h2>Alex Yakubin</h2>
+			<div style={{ position: 'relative' }}>
+				<StyledImage src="/me.png"></StyledImage>
+				<StyledGlasses src="/1.png"></StyledGlasses>
+			</div>
+
+			<StyledText>HACKERMAN</StyledText>
+		</StyledMain>
 	);
 };

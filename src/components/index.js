@@ -1,5 +1,5 @@
 export * from './Button';
-export * from './CalculatorModule';
+export * from './WorkItem';
 export * from './Footer';
 export * from './NavBar';
 export * from './Icon';

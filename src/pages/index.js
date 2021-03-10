@@ -1,5 +1,4 @@
-export * from './Calculator';
+export * from './MyWork';
 export * from './Contacts';
-export * from './FAQ';
 export * from './Main';
 export * from './AgentPage';

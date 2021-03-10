@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Calculator, Contacts, FAQ, Main, AgentPage } from '../src/pages';
+import { Contacts, Main, AgentPage, MyWork } from '../src/pages';
 import { NavBar, Footer } from 'components';
 import { AuthProvider } from '../src/firebase/context';
 
@@ -12,9 +12,8 @@ const App = () => {
 				<NavBar />
 				<Switch>
 					<Route exact component={Main} path="/" />
-					<Route exact component={Calculator} path="/calc" />
+					<Route exact component={MyWork} path="/mywork" />
 					<Route exact component={Contacts} path="/contacts" />
-					<Route exact component={FAQ} path="/faq" />
 					<Route exact component={AgentPage} path="/adminpagesecretlink" />
 				</Switch>
 				<Footer />
