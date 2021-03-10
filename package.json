@@ -19,7 +19,9 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "styled-components": "^5.2.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",    
+    "react-app-rewire-alias": "^0.1.6",
+    "react-app-rewired": "^2.1.8"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -52,9 +54,7 @@
     "eslint": "^7.13.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.21.5",
-    "rc-slider": "^9.6.3",
-    "react-app-rewire-alias": "^0.1.6",
-    "react-app-rewired": "^2.1.8"
+    "rc-slider": "^9.6.3"
   },
   "lint-staged": {
     "*.{js,jsx}": [
